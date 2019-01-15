@@ -1,14 +1,13 @@
 const { Router } = require('express');
 let router = Router();
 const tasks = require('../dao/tasks.js');
-const API ='f5f0c7c325fe64d2991d321a2b9e0f01'
+const API =require('../sec/API.js')
 const axios = require('axios');
 //const { inputHandler, asyncMiddleware } = require('../middlewares/middlewares.js');
 
 
 
 let getWeather = (opts) => {
-	console.log(opts);
 	return axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${opts.city}	,${opts.country}&appid=${API}&units=metric`);
 }
 
@@ -16,6 +15,7 @@ module.exports = () => {
 	router.get('/', async (req, res) => {
 		let city = req.query["city"];
 		let country = req.query["country"];
+		console.log("route get weather")
 		if (!city || !country) {
 			res.status(502).json({
 				message: "city or country is missing",
@@ -44,6 +44,7 @@ module.exports = () => {
 						}
 					})
 				} catch (err) {
+					console.log(err.response.data)
 					res.status(500).json({
 						message: err.response.data.message,
 						status: err.response.data.cod	
@@ -56,8 +57,10 @@ module.exports = () => {
 						country: country
 					});
 					let data = result.data;
+					console.log(data)
 					res.status(200).json(data);
 				} catch (err) {
+					console.log(res.response.data)
 					res.status(500).json({
 						message: err.response.data.message,
 						status: err.response.data.cod	
