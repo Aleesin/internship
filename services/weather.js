@@ -44,7 +44,6 @@ module.exports = () => {
 						}
 					})
 				} catch (err) {
-					console.log(err.response.data);
 					res.status(500).json({
 						message: err.response.data.message,
 						status: err.response.data.cod	

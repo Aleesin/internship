@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-const Weather = props => (
-		<div className = "weather__info">
+const Weather = (props) => {
+		return  (
+			<div className = "weather__info">
       		{
+
       			props.city && <p className="weather__key">
 				      			location: <span className="weather__value"> {props.city}, {props.country}</span>
 				      		  </p>
@@ -26,7 +28,7 @@ const Weather = props => (
 						      	</p>
 	      	}
 	      	{props.err && <p className="weather__key">message: <span className="weather__value">{props.err.message}</span> <br />status: <span className="weather__value">{props.err.status}</span></p>}
-	     </div>
-	)
+	     </div>)
+	}
 
 export default Weather;
