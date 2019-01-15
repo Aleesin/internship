@@ -14,7 +14,6 @@ export default class App extends Component {
 			weather:undefined,
 			country: undefined,
 			coord:undefined,
-			err: undefined,
 			toRender: undefined
 		}
 		this.onClick = this.onClick.bind(this);
@@ -28,24 +27,20 @@ export default class App extends Component {
 			.then(response => this.getData(response.data))
 			.catch(err => {
 				this.setState({
-					err: {
-						message: err.response.data.message,
-						status: err.response.status
-					},
 					main:undefined,
 					city:undefined,
 					weather:undefined,
 					country:undefined,
 					coord:undefined,
-					toRender:undefined
+					toRender:<Weather err = {{
+						message: err.response.data.message,
+						status: err.response.status
+					}}/>
 				});
 			})
 	}
 	renderTwo(response) {
-		console.log(response);
 		let style = {display: '-webkit-inline-box'}
-		let first = <Weather />
-		let second = <Weather />
 		let result = <div style={style}>	
 						<Weather main={response.firstData.main}
 					    		 city = {response.firstData.name}
@@ -73,24 +68,19 @@ export default class App extends Component {
 			weather = response.weather,
 			coord = response.coord,
 			country =response.sys.country;
+			let result = <Weather main={main}
+					    		  city = {city}
+					    		  country = {country}
+					    		  err = {undefined}
+					    		  weather = {weather}
+				    	/>
 			this.setState({
-				main: main,
-				city: city,
-				weather: weather,
-				coord: coord,
-				err:undefined,
-				country: country,
-				toRender:false
+				toRender:result
 			})
 		}
 	}
 	render() {
-		let renderWeather = !this.state.toRender?<Weather main={this.state.main}
-											    		city = {this.state.city}
-											    		country = {this.state.country}
-											    		err = {this.state.err}
-											    		weather = {this.state.weather}
-											    	/>:this.state.toRender;	
+		let renderWeather = this.state.toRender	
 	    return (
 	    	<div>
 	    		<div className = 'wrapper'>
