@@ -4,6 +4,7 @@ import Title from './components/Title.js';
 import Weather from './components/Weather.js';
 import axios from 'axios';
 import './App.css';
+
 export default class App extends Component {
 	constructor () {
 		super();
@@ -14,7 +15,6 @@ export default class App extends Component {
 			country: undefined,
 			coord:undefined,
 			err: undefined,
-			renderOne: false,
 			toRender: undefined
 		}
 		this.onClick = this.onClick.bind(this);
@@ -37,30 +37,31 @@ export default class App extends Component {
 					weather:undefined,
 					country:undefined,
 					coord:undefined,
-					renderOne:true
+					toRender:undefined
 				});
 			})
 	}
 	renderTwo(response) {
+		console.log(response);
+		let style = {display: '-webkit-inline-box'}
 		let first = <Weather />
 		let second = <Weather />
-		let result = <div>	
+		let result = <div style={style}>	
 						<Weather main={response.firstData.main}
-					    		 city = {response.firstData.city}
-					    		 country = {response.firstData.country}
+					    		 city = {response.firstData.name}
+					    		 country = {response.firstData.sys.country}
 					    		 err = {response.firstData.err}
 					    		 weather = {response.firstData.weather}
 					    />
 						<Weather main={response.secondData.main}
-					    		 city = {response.secondData.city}
-					    		 country = {response.secondData.country}
+					    		 city = {response.secondData.name}
+					    		 country = {response.secondData.sys.country}
 					    		 err = {response.secondData.err}
 					    		 weather = {response.secondData.weather}
 					    />
 					 </div>
 		this.setState({
-			toRender: result,
-			renderOne: false
+			toRender: result
 		})
  	}
 	getData(response) {
@@ -79,17 +80,17 @@ export default class App extends Component {
 				coord: coord,
 				err:undefined,
 				country: country,
-				render: true
+				toRender:false
 			})
 		}
 	}
 	render() {
-		let renderWeather = this.state.render?<Weather main={this.state.main}
+		let renderWeather = !this.state.toRender?<Weather main={this.state.main}
 											    		city = {this.state.city}
 											    		country = {this.state.country}
 											    		err = {this.state.err}
 											    		weather = {this.state.weather}
-											    	/>:this.state.toRender?this.state.toRender:'';							    	
+											    	/>:this.state.toRender;	
 	    return (
 	    	<div>
 	    		<div className = 'wrapper'>
@@ -101,7 +102,7 @@ export default class App extends Component {
 		    					</div>
 		    					<div className='col-xs-7 form-container'>
 		    						<Form onClick={this.onClick}/>
-			    					{renderWeather} 
+		    						{renderWeather} 
 		    					</div>
 		    				</div>
 	    				</div>
