@@ -17,11 +17,10 @@ routes(app);
 
 
 
-// app.use((err, req, res, next) => {
-// 	const status = err.status || 500;
-// 	console.log('here in handler err');
-// 	res.status(status).json(err)
-// });
+app.use((err, req, res, next) => {
+	const status = err.status || 500;
+	res.status(status).json(err)
+});
 app.get('/dist/bundle.js', (req, res) => {
 	res.sendFile(path.resolve('./dist/bundle.js'));
 })
