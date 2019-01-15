@@ -22,60 +22,53 @@ export default class App extends Component {
 			.then(response => this.getData(response.data))
 			.catch(err => {
 				this.setState({
-					toRender:this.renderWeather([
-							undefined,
-							undefined,
-							undefined,
-							undefined,
-							{
-							  message: err.response.data.message,
-						      status: err.response.status
-					        }
-						])
+					toRender:this.renderWeather({
+								err : {
+									  message: err.response.data.message,
+								      status: err.response.status
+							        }
+								})
 				});
 			})
 	}
 	renderTwo(response) {
 		let style = {display: '-webkit-inline-box'}
 		let result = <div style={style}>	
-						{this.renderWeather([
-							response.firstData.name,
-							response.firstData.sys.country,
-							response.firstData.main,
-							response.firstData.weather,
-							response.firstData.err,
-						])}
-						{this.renderWeather([
-							response.secondData.name,
-							response.secondData.sys.country,
-							response.secondData.main,
-							response.secondData.weather,
-							response.secondData.err,
-						])}
+						{this.renderWeather({
+							city :response.firstData.name, 
+							country : response.firstData.sys.country,
+						    main : response.firstData.main,
+						    weather : response.firstData.weather,
+						    err : response.firstData.err
+							})
+						}
+						{this.renderWeather({
+							city :response.secondData.name, 
+							country : response.secondData.sys.country,
+						    main : response.secondData.main,
+						    weather : response.secondData.weather,
+						    err : response.secondData.err
+							})}
 					 </div>
 		this.setState({
 			toRender: result
 		})
  	}
  	renderWeather(props) {
- 		return <Weather city = {props[0]}
-			    		country = {props[1]}
-			    		main={props[2]}
-			    		weather = {props[3]}
-			    		err = {props[4]}
+ 		return <Weather {...props}
 			    />
  	}
 	getData(response) {
 		if (response.data && response.data.multiple)
 			this.renderTwo(response.data)
 		else {
-			let result = this.renderWeather([
-				response.city, 
-				response.country,
-			    response.main,
-			    response.weather,
-			    response.undefined
-			]);
+			let result = this.renderWeather({
+				city :response.name, 
+				country : response.sys.country,
+			    main : response.main,
+			    weather : response.weather,
+			    err : response.undefined
+			});
 			this.setState({
 				toRender:result
 			})

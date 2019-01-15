@@ -31,6 +31,7 @@ module.exports = () => {
 				country: country
 			});
 			let data = result.data;
+			console.log(data)
 			res.status(200).json(data);
 		}
 		
