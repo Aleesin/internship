@@ -7,6 +7,7 @@ const Weather = (props) => {
 
       			props.city && <p className="weather__key">
 				      			location: <span className="weather__value"> {props.city}, {props.country}</span>
+				      			{props.local && <span>c'est ici</span>}
 				      		  </p>
       		}	
       		{
@@ -30,5 +31,7 @@ const Weather = (props) => {
 	      	{props.err && <p className="weather__key">message: <span className="weather__value">{props.err.message}</span> <br />status: <span className="weather__value">{props.err.status}</span></p>}
 	     </div>)
 	}
+Weather.defaultProps = {
 
+}
 export default Weather;

@@ -12,7 +12,7 @@ export default class App extends Component {
 			toRender: undefined
 		}
 		this.onClick = this.onClick.bind(this);
-		this.renderTwo = this.renderTwo.bind(this);
+		this.getData = this.getData.bind(this);
 	}
 	onClick(e) {
 		e.preventDefault();
@@ -27,59 +27,36 @@ export default class App extends Component {
 							undefined,
 							undefined,
 							undefined,
+							undefined,
 							{
-							  message: err.response.data.message,
-						      status: err.response.status
+							  message: "There has been an error while retrieving the weather: " + (err.response && err.response.data ? err.response.data.message : ''),
+						      status: err.response && err.response.status
 					        }
 						])
 				});
 			})
 	}
-	renderTwo(response) {
-		let style = {display: '-webkit-inline-box'}
-		let result = <div style={style}>	
-						{this.renderWeather([
-							response.firstData.name,
-							response.firstData.sys.country,
-							response.firstData.main,
-							response.firstData.weather,
-							response.firstData.err,
-						])}
-						{this.renderWeather([
-							response.secondData.name,
-							response.secondData.sys.country,
-							response.secondData.main,
-							response.secondData.weather,
-							response.secondData.err,
-						])}
-					 </div>
-		this.setState({
-			toRender: result
-		})
- 	}
  	renderWeather(props) {
  		return <Weather city = {props[0]}
 			    		country = {props[1]}
 			    		main={props[2]}
 			    		weather = {props[3]}
-			    		err = {props[4]}
+			    		local = {props[4]}
+			    		err = {props[5]}
 			    />
  	}
 	getData(response) {
-		if (response.data && response.data.multiple)
-			this.renderTwo(response.data)
-		else {
-			let result = this.renderWeather([
-				response.city, 
-				response.country,
-			    response.main,
-			    response.weather,
-			    response.undefined
-			]);
-			this.setState({
-				toRender:result
-			})
-		}
+		let result = this.renderWeather([
+			response.name, 
+			response.country,
+		    response.main,
+		    response.weather,
+		    response.local,
+		    undefined
+		]);
+		this.setState({
+		 	toRender:result
+		})
 	}
 	render() {
 		let renderWeather = this.state.toRender	
